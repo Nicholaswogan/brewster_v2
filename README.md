@@ -46,9 +46,11 @@ pip install --no-build-isolation --config-settings=editable.rebuild=true -Cbuild
 **Environment setup:**
 
 ```
-conda create -n brewster -c conda-forge python numpy scikit-build cmake ninja pip astropy corner emcee scipy jupyter schwimmbad
+conda create -n brewster -c conda-forge python numpy scikit-build cmake=3 ninja pip astropy corner emcee scipy jupyter schwimmbad fortran-compiler c-compiler cxx-compiler
 
 conda activate brewster
+
+export CMAKE_ARGS="-DCMAKE_PREFIX_PATH=$CONDA_PREFIX"
 ```
 
 **Option 1:**
@@ -57,11 +59,21 @@ conda activate brewster
 python -m pip install --no-deps --no-build-isolation . -v
 ```
 
+With your terminal OUTSIDE OF THE ROOT DIRECTORY OF brewster_v2 (i.e., cd into your home directory, `cd ~/`), do
+
+```
+python -c "from brewster import utils"
+```
+
 **Option 2:**
 
 ```
 mkdir build
 cd build
-cmake ..
+cmake .. -DCMAKE_PREFIX_PATH=$CONDA_PREFIX
 cmake --build . -j && cmake --install .
 ```
+
+Compiled files are placed in `brewster/`, and code can be run from the root directory of brewster_v2.
+
+
